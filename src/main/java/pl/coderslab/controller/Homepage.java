@@ -1,6 +1,6 @@
-package pl.coderslab.app;
+package pl.coderslab.controller;
 
-import pl.coderslab.model.Exercise;
+import pl.coderslab.model.Solution;
 import pl.coderslab.utils.DBUtil;
 
 import javax.servlet.ServletException;
@@ -13,18 +13,22 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 @WebServlet("/")
-public class Home extends HttpServlet {
+public class Homepage extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Exercise exercise = new Exercise("testowe", "cwiczenie testowe");
+
+        String num = getServletContext().getInitParameter("solutions-limit");
         try(Connection conn = DBUtil.getConn()){
-            exercise.save(conn);
+            Solution[] solutions = Solution.loadAll(conn, Integer.valueOf(num));
+            request.setAttribute("solutions", solutions);
+            getServletContext().getRequestDispatcher("/index.jsp").forward(request,response);
         } catch (SQLException e){
             e.printStackTrace();
         }
+        //TODO STOP NA ZADANIU 2 STRONA 28
 
     }
 }

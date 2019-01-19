@@ -11,8 +11,8 @@ import java.util.Date;
 public class Solution {
 
     private int id = 0;
-    private String created = dateNow();
-    private String updated;
+    private String created = dateNow(); //fixme zmiana stringów na localdatetime
+    private String updated; //fixme zmiana stringow na ldf
     private String description;
     private Exercise exercise;
     private User user;
@@ -23,7 +23,7 @@ public class Solution {
     public Solution(String description) {
         this.description = description;
 
-    } //todo dodac tworzenie relacji do exercise i user
+    }
 
     private String dateNow() {
         Date date = new Date();
@@ -148,45 +148,21 @@ public class Solution {
     }
 
     public static Solution[] loadAll(Connection conn) throws SQLException {
-
-        User[] users = User.loadAll(conn);
-        Exercise[] exercises = Exercise.loadAll(conn);
-
-        ArrayList<Solution> solutions = new ArrayList<Solution>();
         String sql = "SELECT * FROM solution";
         PreparedStatement prepStm = conn.prepareStatement(sql);
         ResultSet rs = prepStm.executeQuery();
-        while (rs.next()) {
-            Solution loadedSolution = new Solution();
-            loadedSolution.id = rs.getInt("id");
-            loadedSolution.created = rs.getString("created");
-            loadedSolution.updated = rs.getString("updated");
-            loadedSolution.description = rs.getString("description");
-            int exId = rs.getInt("exercise_id");
-            int userId = rs.getInt("user_id");
 
-            if (exId > 0) {
-                for (int i = 0; i < exercises.length; i++) {
-                    if (exercises[i].getId() == exId) {
-                        loadedSolution.exercise = exercises[i];
-                        break;
-                    }
-                }
-            }
+        Solution[] sArray = getSolutions(conn, rs);
+        return sArray;
+    }
 
-            if (userId > 0) {
-                for (int i = 0; i < users.length; i++) {
-                    if (users[i].getId() == userId) {
-                        loadedSolution.user = users[i];
-                        break;
-                    }
-                }
-            }
+    public static Solution[] loadAll(Connection conn, int limit) throws SQLException {
+        String sql = "SELECT * FROM solution ORDER BY created DESC LIMIT ?";
+        PreparedStatement prepStm = conn.prepareStatement(sql);
+        prepStm.setInt(1, limit);
+        ResultSet rs = prepStm.executeQuery();
 
-            solutions.add(loadedSolution);
-        }
-        Solution[] sArray = new Solution[solutions.size()];
-        sArray = solutions.toArray(sArray);
+        Solution[] sArray = getSolutions(conn, rs);
         return sArray;
     }
 
@@ -243,6 +219,45 @@ public class Solution {
             loadedSolution.exercise = exercise;
 
             int userId = rs.getInt("user_id");
+
+            if (userId > 0) {
+                for (int i = 0; i < users.length; i++) {
+                    if (users[i].getId() == userId) {
+                        loadedSolution.user = users[i];
+                        break;
+                    }
+                }
+            }
+
+            solutions.add(loadedSolution);
+        }
+        Solution[] sArray = new Solution[solutions.size()];
+        sArray = solutions.toArray(sArray);
+        return sArray;
+    }
+
+
+    private static Solution[] getSolutions(Connection conn, ResultSet rs) throws SQLException {
+        User[] users = User.loadAll(conn);
+        Exercise[] exercises = Exercise.loadAll(conn);
+        ArrayList<Solution> solutions = new ArrayList<Solution>();
+        while (rs.next()) {
+            Solution loadedSolution = new Solution();
+            loadedSolution.id = rs.getInt("id");
+            loadedSolution.created = rs.getString("created");
+            loadedSolution.updated = rs.getString("updated");
+            loadedSolution.description = rs.getString("description");
+            int exId = rs.getInt("exercise_id");
+            int userId = rs.getInt("user_id");
+
+            if (exId > 0) {
+                for (int i = 0; i < exercises.length; i++) {
+                    if (exercises[i].getId() == exId) {
+                        loadedSolution.exercise = exercises[i];
+                        break;
+                    }
+                }
+            }
 
             if (userId > 0) {
                 for (int i = 0; i < users.length; i++) {

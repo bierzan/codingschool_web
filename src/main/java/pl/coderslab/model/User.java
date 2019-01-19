@@ -2,7 +2,7 @@ package pl.coderslab.model;
 
 
 import pl.coderslab.utils.BCrypt;
-import pl.coderslab.utils.DatabaseConnection;
+import pl.coderslab.utils.DBUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,8 +16,6 @@ public class User {
     private String password;
     private String email;
     private int id = 0;
-    // TODO czy musimy obslugiwac biginty
-//    private BigInteger id = new BigInteger("0");
     private UserGroup group;
 
     public User() {
@@ -35,7 +33,7 @@ public class User {
         this.email = email;
         this.setPassword(password);
         try {
-            Connection conn = DatabaseConnection.getConnection();
+            Connection conn = DBUtil.getConn();
             this.group = UserGroup.loadById(conn, groupId);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -228,7 +226,7 @@ public class User {
 
     public void setGroup(int groupId) {
         try {
-            Connection conn = DatabaseConnection.getConnection();
+            Connection conn = DBUtil.getConn();
             this.group = UserGroup.loadById(conn, groupId);
         } catch (SQLException e) {
             e.printStackTrace();
