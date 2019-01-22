@@ -27,7 +27,7 @@ public class Solution {
 
     }
 
-    private String dateNow() {
+    public static String dateNow() {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(date);
@@ -35,6 +35,10 @@ public class Solution {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCreated() {
@@ -49,8 +53,8 @@ public class Solution {
         return updated;
     }
 
-    public void setUpdated(String updated) {
-        this.updated = updated;
+    public void setUpdated() {
+        this.updated = dateNow();
     }
 
     public String getDescription() {
@@ -79,64 +83,6 @@ public class Solution {
 
     ////////////////////////////////////
 
-    public void save(Connection conn) throws SQLException {
-        if (this.id == 0) {
-            String sql = "INSERT INTO solution (created, updated, description, exercise_id, user_id) " +
-                    "VALUES (?, ?, ?,?,?)";
-            String[] generatedColumns = {"id"};
-            PreparedStatement prepStm = conn.prepareStatement(sql, generatedColumns);
-            prepStm.setString(1, this.created);
-            prepStm.setString(2, this.updated);
-            prepStm.setString(3, this.description);
-            prepStm.setInt(4, this.exercise.getId());
-            prepStm.setInt(5, this.user.getId());
-            prepStm.executeUpdate();
-            ResultSet rs = prepStm.getGeneratedKeys();
-
-            if (rs.next()) {
-                this.id = rs.getInt(1);
-            }
-        } else {
-            update(conn);
-        }
-    }
-
-    public void update(Connection conn) throws SQLException {
-        if (this.id > 0) {
-            String sql = "UPDATE solution SET updated = ?, description = ?, exercise_id = ?, user_id = ? WHERE id = ?";
-            PreparedStatement prepStm = conn.prepareStatement(sql);
-            prepStm.setString(1, dateNow());
-            prepStm.setString(2, this.description);
-            prepStm.setInt(3, this.exercise.getId());
-            prepStm.setInt(4, this.user.getId());
-            prepStm.setInt(5, this.id);
-            prepStm.executeUpdate();
-        } else {
-            System.out.println("Takie rozwiązanie nie istnieje w baze danych.");
-        }
-    }
-
-    public void delete(Connection conn) throws SQLException {
-        if (this.id != 0) {
-            String sql = "DELETE FROM solution WHERE id = ?";
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setInt(1, this.id);
-            preparedStatement.executeUpdate();
-            this.id = 0;
-        }
-    }
-
-    public static Solution loadById(Connection conn, int id) throws SQLException {
-        String sql = "SELECT * FROM solution WHERE id = ?";
-        PreparedStatement prepStm = conn.prepareStatement(sql);
-        prepStm.setInt(1, id);
-        ResultSet rs = prepStm.executeQuery();
-
-        if (rs.next()) {
-            return Solution.getSolutionWithAttributesFromResultSet(conn, rs);
-        }
-        return null;
-    }
 
     public static Solution[] loadAll(Connection conn) throws SQLException {
         String sql = "SELECT * FROM solution";

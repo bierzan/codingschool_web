@@ -1,18 +1,11 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: bierzan
-  Date: 19.01.19
-  Time: 22:48
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 
     <table class="table">
         <tr>
-            <td>Strona główna</td>
-            <td>Grupy</td>
-            <td>Panel Administratora</td>
+            <th><a href="/">STRONA GŁÓWNA</a></th>
+            <th>GRUPY</th> <%--TODO ZADANIE 4--%>
+            <th>PANEL ADMINISTRATORA</th>
         </tr>
     </table>
 
