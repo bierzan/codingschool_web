@@ -14,7 +14,7 @@ public class User {
 
     private String username;
     private String password;
-    private String email;
+    protected String email;
     private int id = 0;
     private UserGroup group;
 
@@ -117,25 +117,17 @@ public class User {
         }
     }
 
-    public static User loadById(Connection conn, int id) throws SQLException {
-        String sql = "SELECT * FROM users WHERE id = ?";
-        PreparedStatement prepStm = conn.prepareStatement(sql);
-        prepStm.setInt(1, id);
-        ResultSet rs = prepStm.executeQuery();
-
-        if (rs.next()) {
-            User loadedUser = new User();
-            loadedUser.id = rs.getInt("id");
-            loadedUser.username = rs.getString("username");
-            loadedUser.password = rs.getString("password");
-            loadedUser.email = rs.getString("email");
-            int groupId = rs.getInt("user_group_id");
-            if (groupId > 0) {
-                loadedUser.group = UserGroup.loadById(conn, groupId);
-            }
-            return loadedUser;
+    public static User getUserWithAttributesFromResultSet(Connection conn, ResultSet rs) throws SQLException {
+        User loadedUser = new User();
+        loadedUser.id = rs.getInt("id");
+        loadedUser.username = rs.getString("username");
+        loadedUser.password = rs.getString("password");
+        loadedUser.email = rs.getString("email");
+        int groupId = rs.getInt("user_group_id");
+        if (groupId > 0) {
+            loadedUser.group = UserGroup.loadById(conn, groupId);
         }
-        return null;
+        return loadedUser;
     }
 
     public static User[] loadAll(Connection conn) throws SQLException {
@@ -235,5 +227,9 @@ public class User {
 
     public void setGroup(UserGroup group) {
         this.group = group;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
