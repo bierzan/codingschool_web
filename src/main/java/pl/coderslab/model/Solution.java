@@ -77,6 +77,8 @@ public class Solution {
         this.user = user;
     }
 
+    ////////////////////////////////////
+
     public void save(Connection conn) throws SQLException {
         if (this.id == 0) {
             String sql = "INSERT INTO solution (created, updated, description, exercise_id, user_id) " +
@@ -131,20 +133,7 @@ public class Solution {
         ResultSet rs = prepStm.executeQuery();
 
         if (rs.next()) {
-            Solution loadedSolution = new Solution();
-            loadedSolution.id = rs.getInt("id");
-            loadedSolution.created = rs.getString("created");
-            loadedSolution.updated = rs.getString("updated");
-            loadedSolution.description = rs.getString("description");
-            int exerciseId = rs.getInt("exercise_id");
-            int userId = rs.getInt("user_id");
-            if (exerciseId > 0) {
-                loadedSolution.exercise = Exercise.loadById(conn, exerciseId);
-            }
-            if (userId > 0) {
-                loadedSolution.user = UserDao.getInstance().loadById(userId);
-            }
-            return loadedSolution;
+            return Solution.getSolutionWithAttributesFromResultSet(conn, rs);
         }
         return null;
     }

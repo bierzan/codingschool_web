@@ -13,24 +13,22 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@WebServlet("/")
-public class Homepage extends HttpServlet {
+@WebServlet("/SolutionDetails")
+public class SolutionDetails extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String num = getServletContext().getInitParameter("solutions-limit");
-
+        String solId = request.getParameter("solId");
         try(Connection conn = DBUtil.getConn()){
-            Solution[] solutions = SolutionDao.getInstance().loadAll(Integer.valueOf(num));
-            request.setAttribute("solutions", solutions);
-            getServletContext().getRequestDispatcher("/index.jsp").forward(request,response);
+            Solution sol = SolutionDao.getInstance().loadById(Integer.valueOf(solId));
+            request.setAttribute("sol", sol);
+            getServletContext().getRequestDispatcher("/solutionDetails.jsp").forward(request,response);
         } catch (SQLException e){
             e.printStackTrace();
         }
-        //TODO STOP NA ZADANIU 2 STRONA 28
 
     }
 }

@@ -18,6 +18,20 @@ public class SolutionDao {
         }
         return instance;
     }
+//DAO METHODS
+
+    public Solution loadById(int id) throws SQLException {
+        Connection conn = DBUtil.getConn();
+        String sql = "SELECT * FROM solution WHERE id = ?";
+        PreparedStatement prepStm = conn.prepareStatement(sql);
+        prepStm.setInt(1, id);
+        ResultSet rs = prepStm.executeQuery();
+
+        if (rs.next()) {
+            return Solution.getSolutionWithAttributesFromResultSet(conn, rs);
+        }
+        return null;
+    }
 
     public Solution[] loadAll(int limit) throws SQLException {
         Connection conn = DBUtil.getConn();
@@ -30,12 +44,12 @@ public class SolutionDao {
         return sArray;
     }
 
-
+    //additional methods
     private Solution[] getSolutionsFromResultSet(ResultSet rs) throws SQLException {
         Connection conn = DBUtil.getConn();
         ArrayList<Solution> solutions = new ArrayList<>();
         while (rs.next()) {
-            solutions.add(Solution.getSolutionWithAttributesFromResultSet(conn,rs));
+            solutions.add(Solution.getSolutionWithAttributesFromResultSet(conn, rs));
         }
         Solution[] sArray = new Solution[solutions.size()];
         sArray = solutions.toArray(sArray);

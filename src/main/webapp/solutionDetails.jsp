@@ -13,28 +13,33 @@
     <%@include file="header.jspf" %>
 </div>
 <div class="container">
+
+
     <table class="table">
         <tr>
-            <th>NAZWA ZADANIA</th>
-            <th>OSTATNIE ROZWIĄZANIE</th>
-            <th>UŻYTKOWNIK</th>
-            <th></th>
+            <th>TYTUŁ</th>
+            <td>${sol.exercise.title}</td>
         </tr>
-        <c:forEach items="${solutions}" var="sol">
-            <tr>
-                <td>${sol.exercise.title}</td>
-                <td>
-                    <c:if test="${empty sol.updated}">
-                        ${sol.created}
-                    </c:if>
-                    <c:if test="${not empty sol.updated}">
-                        ${sol.updated}
-                    </c:if>
-                </td>
-                <td>${sol.user.username}</td>
-                <td><a href="/SolutionDetails?solId=${sol.id}">Pokaż</a></td>
-            </tr>
-        </c:forEach>
+        <tr>
+            <th>TREŚĆ</th>
+            <td>${sol.exercise.description}</td>
+        </tr>
+        <tr>
+            <th>ROZWIĄZANIE</th>
+            <td>${sol.description}</td>
+        </tr>
+        <tr>
+            <th>AUTOR</th>
+            <td>${sol.user.username}</td><td>grupa: ${sol.user.group.name}</td>
+        </tr>
+        <tr>
+            <th>DATA PRZESŁANIA</th>
+            <td>${sol.created}</td>
+        </tr>
+        <tr>
+            <th>DATA AKTUALIZACJI</th>
+            <td>${sol.updated}</td>
+        </tr>
     </table>
 </div>
 <div class="container">
