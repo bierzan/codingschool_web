@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class UserDao {
     private static UserDao instance;
@@ -30,6 +31,23 @@ public class UserDao {
             return User.getUserWithAttributesFromResultSet(conn, rs);
         }
         return null;
+    }
+
+    public User[] loadAllByGroupId(int groupId) throws SQLException {
+        Connection conn = DBUtil.getConn();
+
+        ArrayList<User> users = new ArrayList<User>();
+        String sql = "SELECT * FROM users WHERE user_group_id = ?";
+        PreparedStatement prepStm = conn.prepareStatement(sql);
+        prepStm.setInt(1, groupId);
+        ResultSet rs = prepStm.executeQuery();
+
+        while (rs.next()) {
+            users.add(User.getUserWithAttributesFromResultSet(conn, rs));
+        }
+        User[] uArray = new User[users.size()];
+        uArray = users.toArray(uArray);
+        return uArray;
     }
 
 }

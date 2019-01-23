@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static pl.coderslab.model.UserGroup.getUserGroupWithAttributesByResultSet;
+
 public class UserGroupDao {
     private static UserGroupDao instance;
 
@@ -27,10 +29,24 @@ public class UserGroupDao {
         PreparedStatement prepStm = conn.prepareStatement(sql);
         ResultSet rs = prepStm.executeQuery();
         while (rs.next()) {
-            groups.add(UserGroup.getUserGroupWithAttributesByResultSet(rs));
+            groups.add(getUserGroupWithAttributesByResultSet(rs));
         }
         UserGroup[] gArray = new UserGroup[groups.size()];
         gArray = groups.toArray(gArray);
         return gArray;
+    }
+
+    public static UserGroup loadById(int id) throws SQLException {
+        Connection conn = DBUtil.getConn();
+        String sql = "SELECT * FROM user_group WHERE id = ?";
+        PreparedStatement prepStm = conn.prepareStatement(sql);
+        prepStm.setInt(1, id);
+        ResultSet rs = prepStm.executeQuery();
+
+        if (rs.next()) {
+            UserGroup loadedGroup = getUserGroupWithAttributesByResultSet(rs);
+            return loadedGroup;
+        }
+        return null;
     }
 }

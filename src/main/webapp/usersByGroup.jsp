@@ -18,15 +18,15 @@
     <table class="table">
         <tr>
             <th>NUMER ID</th>
-            <th>NAZWA</th>
+            <th>NAZWA UŻYTKOWNIKA</th>
             <th></th>
         </tr>
 
-        <c:forEach items="${groups}" var="group">
+        <c:forEach items="${users}" var="user">
         <tr>
-            <td>${group.id}</td>
-            <td>${group.name}</td>
-            <td><a href="/UsersByGroup?groupId=${group.id}">Pokaż użytkowników</a></td>
+            <td>${user.id}</td>
+            <td>${user.username}</td>
+            <td><a href="/UserDetails=${user.id}">Pokaż użytkownika</a></td>
         </tr>
         </c:forEach>
 
