@@ -23,11 +23,11 @@
         </tr>
 
         <c:forEach items="${users}" var="user">
-        <tr>
-            <td>${user.id}</td>
-            <td>${user.username}</td>
-            <td><a href="/UserDetails=${user.id}">Pokaż użytkownika</a></td>
-        </tr>
+            <tr>
+                <td>${user.id}</td>
+                <td>${user.username}</td>
+                <td><a href="/UserDetails?userId=${user.id}">Pokaż użytkownika</a></td>
+            </tr>
         </c:forEach>
 
     </table>

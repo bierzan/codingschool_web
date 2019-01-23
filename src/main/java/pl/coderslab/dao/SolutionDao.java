@@ -1,7 +1,6 @@
 package pl.coderslab.dao;
 
 import pl.coderslab.model.Solution;
-import pl.coderslab.model.User;
 import pl.coderslab.utils.DBUtil;
 
 import java.sql.Connection;
@@ -54,7 +53,7 @@ public class SolutionDao {
             prepStm.setString(2, sol.getDescription());
             prepStm.setInt(3, sol.getExercise().getId());
             prepStm.setInt(4, sol.getUser().getId());
-            prepStm.setInt(5,sol.getId());
+            prepStm.setInt(5, sol.getId());
             prepStm.executeUpdate();
         } else {
             System.out.println("Takie rozwiązanie nie istnieje w baze danych."); //todo przerobic na komunikat w htmlu
@@ -63,7 +62,7 @@ public class SolutionDao {
 
     public Solution delete(Solution sol, int id) throws SQLException {
         Connection conn = DBUtil.getConn();
-        if (sol.getId()!= 0) {
+        if (sol.getId() != 0) {
             String sql = "DELETE FROM solution WHERE id = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, sol.getId());
@@ -94,6 +93,22 @@ public class SolutionDao {
         ResultSet rs = prepStm.executeQuery();
 
         Solution[] sArray = getSolutionsFromResultSet(rs);
+        return sArray;
+    }
+
+    public Solution[] loadAllByUserId(int userId) throws SQLException {
+        Connection conn = DBUtil.getConn();
+
+        ArrayList<Solution> solutions = new ArrayList<Solution>();
+        String sql = "SELECT * FROM solution WHERE user_id = ? ORDER BY updated DESC, created DESC";
+        PreparedStatement prepStm = conn.prepareStatement(sql);
+        prepStm.setInt(1, userId);
+        ResultSet rs = prepStm.executeQuery();
+        while (rs.next()) {
+            solutions.add(Solution.getSolutionWithAttributesFromResultSet(conn, rs));
+        }
+        Solution[] sArray = new Solution[solutions.size()];
+        sArray = solutions.toArray(sArray);
         return sArray;
     }
 
