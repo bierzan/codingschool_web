@@ -1,8 +1,7 @@
 package pl.coderslab.controller;
 
-import pl.coderslab.dao.SolutionDao;
-import pl.coderslab.model.Solution;
-import pl.coderslab.utils.DBUtil;
+import pl.coderslab.dao.UserGroupDao;
+import pl.coderslab.model.UserGroup;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,23 +9,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 
-@WebServlet("/")
-public class Homepage extends HttpServlet {
+@WebServlet("/AllGroups")
+public class AllGroups extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        String num = getServletContext().getInitParameter("solutions-limit");
-
         try {
-            Solution[] solutions = SolutionDao.getInstance().loadAll(Integer.valueOf(num));
-            request.setAttribute("solutions", solutions);
-            getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+            UserGroup[] groups = UserGroupDao.getInstance().loadAll();
+            request.setAttribute("groups", groups);
+            getServletContext().getRequestDispatcher("/allGroups.jsp").forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();
         }

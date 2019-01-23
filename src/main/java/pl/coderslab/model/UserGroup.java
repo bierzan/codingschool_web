@@ -76,28 +76,18 @@ public class UserGroup {
         ResultSet rs = prepStm.executeQuery();
 
         if (rs.next()) {
-            UserGroup loadedGroup = new UserGroup();
-            loadedGroup.id = rs.getInt("id");
-            loadedGroup.name = rs.getString("name");
+            UserGroup loadedGroup = getUserGroupWithAttributesByResultSet(rs);
             return loadedGroup;
         }
         return null;
     }
 
-    public static UserGroup[] loadAll(Connection conn) throws SQLException {
-        ArrayList<UserGroup> groups = new ArrayList<UserGroup>();
-        String sql = "SELECT * FROM user_group";
-        PreparedStatement prepStm = conn.prepareStatement(sql);
-        ResultSet rs = prepStm.executeQuery();
-        while (rs.next()) {
-            UserGroup loadedGroup = new UserGroup();
-            loadedGroup.id = rs.getInt("id");
-            loadedGroup.name = rs.getString("name");
-            groups.add(loadedGroup);
-        }
-        UserGroup[] gArray = new UserGroup[groups.size()];
-        gArray = groups.toArray(gArray);
-        return gArray;
+
+    public static UserGroup getUserGroupWithAttributesByResultSet(ResultSet rs) throws SQLException {
+        UserGroup loadedGroup = new UserGroup();
+        loadedGroup.id = rs.getInt("id");
+        loadedGroup.name = rs.getString("name");
+        return loadedGroup;
     }
 }
 

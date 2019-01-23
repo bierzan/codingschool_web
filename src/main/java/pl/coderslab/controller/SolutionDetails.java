@@ -22,7 +22,7 @@ public class SolutionDetails extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String solId = request.getParameter("solId");
-        try(Connection conn = DBUtil.getConn()){
+        try{
             Solution sol = SolutionDao.getInstance().loadById(Integer.valueOf(solId));
             request.setAttribute("sol", sol);
             getServletContext().getRequestDispatcher("/solutionDetails.jsp").forward(request,response);

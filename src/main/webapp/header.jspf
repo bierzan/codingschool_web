@@ -4,7 +4,7 @@
     <table class="table">
         <tr>
             <th><a href="/">STRONA GŁÓWNA</a></th>
-            <th>GRUPY</th> <%--TODO ZADANIE 4--%>
+            <th><a href="/AllGroups">GRUPY</a></th>
             <th>PANEL ADMINISTRATORA</th>
         </tr>
     </table>

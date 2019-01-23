@@ -1,6 +1,7 @@
 package pl.coderslab.model;
 
 
+import pl.coderslab.dao.UserGroupDao;
 import pl.coderslab.utils.BCrypt;
 import pl.coderslab.utils.DBUtil;
 
@@ -132,7 +133,7 @@ public class User {
 
     public static User[] loadAll(Connection conn) throws SQLException {
 
-        UserGroup[] groups = UserGroup.loadAll(conn);
+        UserGroup[] groups = UserGroupDao.getInstance().loadAll();
 
         ArrayList<User> users = new ArrayList<User>();
         String sql = "SELECT * FROM users";
