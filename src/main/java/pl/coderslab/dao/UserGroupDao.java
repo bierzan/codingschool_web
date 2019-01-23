@@ -14,11 +14,42 @@ import static pl.coderslab.model.UserGroup.getUserGroupWithAttributesByResultSet
 public class UserGroupDao {
     private static UserGroupDao instance;
 
-    public static UserGroupDao getInstance(){
-        if(instance == null){
+    public static UserGroupDao getInstance() {
+        if (instance == null) {
             instance = new UserGroupDao();
         }
         return instance;
+    }
+
+    public void save(UserGroup group) throws SQLException {
+        Connection conn = DBUtil.getConn();
+        if (group.getId() == 0) {
+            String sql = "INSERT INTO user_group (name) VALUES (?)";
+            String[] generatedColumns = {"id"};
+            PreparedStatement prepStm = conn.prepareStatement(sql, generatedColumns);
+            prepStm.setString(1, group.getName());
+            prepStm.executeUpdate();
+            ResultSet rs = prepStm.getGeneratedKeys();
+
+            if (rs.next()) {
+                group.setId(rs.getInt(1));
+            }
+        } else {
+            update(group);
+        }
+    }
+
+    public void update(UserGroup group) throws SQLException {
+        Connection conn = DBUtil.getConn();
+        if (group.getId() > 0) {
+            String sql = "UPDATE user_group SET name = ? WHERE id = ?";
+            PreparedStatement prepStm = conn.prepareStatement(sql);
+            prepStm.setString(1, group.getName());
+            prepStm.setInt(2, group.getId());
+            prepStm.executeUpdate();
+        } else {
+            System.out.println("Taka grupa nie istnieje w baze danych.");
+        }
     }
 
     public UserGroup[] loadAll() throws SQLException {
@@ -36,7 +67,7 @@ public class UserGroupDao {
         return gArray;
     }
 
-    public static UserGroup loadById(int id) throws SQLException {
+    public UserGroup loadById(int id) throws SQLException {
         Connection conn = DBUtil.getConn();
         String sql = "SELECT * FROM user_group WHERE id = ?";
         PreparedStatement prepStm = conn.prepareStatement(sql);

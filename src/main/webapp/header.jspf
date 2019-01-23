@@ -1,13 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 
-    <table class="table">
-        <tr>
-            <th><a href="/">STRONA GŁÓWNA</a></th>
-            <th><a href="/AllGroups">GRUPY</a></th>
-            <th>PANEL ADMINISTRATORA</th>
-        </tr>
-    </table>
+<table class="table">
+    <tr>
+        <th><a href="/">STRONA GŁÓWNA</a></th>
+        <th><a href="/AllGroups">GRUPY</a></th>
+        <th><a href="/admin/panelAdmin.jsp">PANEL ADMINISTRATORA</a></th>
+    </tr>
+</table>
 
 
 </html>

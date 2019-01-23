@@ -21,41 +21,16 @@ public class UserGroup {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void save(Connection conn) throws SQLException {
-        if (this.id == 0) {
-            String sql = "INSERT INTO user_group (name) VALUES (?)";
-            String[] generatedColumns = {"id"};
-            PreparedStatement prepStm = conn.prepareStatement(sql, generatedColumns);
-            prepStm.setString(1, this.name);
-            prepStm.executeUpdate();
-            ResultSet rs = prepStm.getGeneratedKeys();
-
-            if (rs.next()) {
-                this.id = rs.getInt(1);
-            }
-        } else {
-            update(conn);
-        }
-    }
-
-    public void update(Connection conn) throws SQLException {
-        if (this.id > 0) {
-            String sql = "UPDATE user_group SET name = ? WHERE id = ?";
-            PreparedStatement prepStm = conn.prepareStatement(sql);
-            prepStm.setString(1, this.name);
-            prepStm.setInt(2, this.id);
-            prepStm.executeUpdate();
-        } else {
-            System.out.println("Taka grupa nie istnieje w baze danych.");
-        }
     }
 
     public void delete(Connection conn) throws SQLException {
