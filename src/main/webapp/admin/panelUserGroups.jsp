@@ -38,10 +38,24 @@
 
         <c:forEach items="${groups}" var="group">
             <tr>
-                <td>${group.id}</td>
-                <td>${group.name}</td>
-                <td><a href="/UsersByGroup?groupId=${group.id}">Pokaż użytkowników</a></td>
-                    <%--todo dorobić edycje grup--%>
+                <c:if test="${edit == group.id}">
+                    <td>${group.id}</td>
+                    <form action="/PanelUserGroups" method="post">
+                        <td>
+                            <input type="text" name="newGroupName"  value="${group.name}">
+                        </td>
+                        <td>
+                            <button type="submit" name="editGroupId" value="${group.id}" class="btn">Zapisz</button>
+                        </td>
+                    </form>
+
+                </c:if>
+                <c:if test="${edit != group.id}">
+                    <td>${group.id}</td>
+                    <td>${group.name}</td>
+                    <td><a href="/PanelUserGroups?editGroupId=${group.id}">Edytuj</a></td>
+                </c:if>
+
             </tr>
         </c:forEach>
 
