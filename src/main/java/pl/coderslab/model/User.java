@@ -45,68 +45,6 @@ public class User {
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
-    public void save(Connection conn) throws SQLException {
-
-        if (this.id == 0) {
-            PreparedStatement prepStm;
-            try {
-                String sql = "INSERT INTO users (username, password, email, user_group_id) VALUES (?, ?, ?,?)";
-                String[] generatedColumns = {"id"};
-                prepStm = conn.prepareStatement(sql, generatedColumns);
-                prepStm.setString(1, this.username);
-                prepStm.setString(2, this.password);
-                prepStm.setString(3, this.email);
-                prepStm.setInt(4, this.group.getId());
-                prepStm.executeUpdate();
-            } catch (NullPointerException e) { //kiedy nie ma przypisanej grupy
-
-                String sql = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
-                String[] generatedColumns = {"id"};
-                prepStm = conn.prepareStatement(sql, generatedColumns);
-                prepStm.setString(1, this.username);
-                prepStm.setString(2, this.password);
-                prepStm.setString(3, this.email);
-                prepStm.executeUpdate();
-
-            }
-
-            ResultSet rs = prepStm.getGeneratedKeys();
-
-            if (rs.next()) {
-                this.id = rs.getInt(1);
-            }
-        } else {
-            update(conn);
-        }
-
-    }
-
-    public void update(Connection conn) throws SQLException {
-        if (this.id > 0) {
-            PreparedStatement prepStm;
-            try {
-                String sql = "UPDATE users SET username = ?, password = ?, email = ?, user_group_id = ? WHERE id = ?";
-                prepStm = conn.prepareStatement(sql);
-                prepStm.setString(1, this.username);
-                prepStm.setString(2, this.password);
-                prepStm.setString(3, this.email);
-                prepStm.setInt(4, this.group.getId());
-                prepStm.setInt(5, this.id);
-                prepStm.executeUpdate();
-            } catch (NullPointerException e) {
-                String sql = "UPDATE users SET username = ?, password = ?, email = ? WHERE id = ?";
-                prepStm = conn.prepareStatement(sql);
-                prepStm.setString(1, this.username);
-                prepStm.setString(2, this.password);
-                prepStm.setString(3, this.email);
-                prepStm.setInt(4, this.id);
-                prepStm.executeUpdate();
-            }
-
-        } else {
-            System.out.println("Taki użytkownik nie istnieje w baze danych.");
-        }
-    }
 
     public void delete(Connection conn) throws SQLException {
         if (this.id != 0) {
