@@ -44,7 +44,6 @@
                     </select>
                 </td>
                 <td><input type="submit" name="add" value="Dodaj" class="btn"></td>
-                <%--todo: przerobić formularz + zrobić stronę pośrednią lub pole koło "dodaj" które pyta o hasło--%>
             </form>
         </tr>
         <c:forEach items="${users}" var="user">

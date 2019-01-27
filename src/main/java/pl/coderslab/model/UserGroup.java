@@ -43,20 +43,6 @@ public class UserGroup {
         }
     }
 
-    public static UserGroup loadById(Connection conn, int id) throws SQLException {
-        String sql = "SELECT * FROM user_group WHERE id = ?";
-        PreparedStatement prepStm = conn.prepareStatement(sql);
-        prepStm.setInt(1, id);
-        ResultSet rs = prepStm.executeQuery();
-
-        if (rs.next()) {
-            UserGroup loadedGroup = getUserGroupWithAttributesByResultSet(rs);
-            return loadedGroup;
-        }
-        return null;
-    }
-
-
     public static UserGroup getUserGroupWithAttributesByResultSet(ResultSet rs) throws SQLException {
         UserGroup loadedGroup = new UserGroup();
         loadedGroup.id = rs.getInt("id");

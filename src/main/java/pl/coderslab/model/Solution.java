@@ -82,8 +82,6 @@ public class Solution {
         this.user = user;
     }
 
-    ////////////////////////////////////
-
     public static Solution getSolutionWithAttributesFromResultSet(Connection conn, ResultSet rs) throws SQLException {
         Solution loadedSolution = new Solution();
         loadedSolution.id = rs.getInt("id");

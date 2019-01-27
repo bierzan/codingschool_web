@@ -35,7 +35,7 @@ public class User {
         this.setPassword(password);
         try {
             Connection conn = DBUtil.getConn();
-            this.group = UserGroup.loadById(conn, groupId);
+            this.group = UserGroupDao.getInstance().loadById(groupId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -64,42 +64,10 @@ public class User {
         loadedUser.email = rs.getString("email");
         int groupId = rs.getInt("user_group_id");
         if (groupId > 0) {
-            loadedUser.group = UserGroup.loadById(conn, groupId);
+            loadedUser.group = UserGroupDao.getInstance().loadById(groupId);
         }
         return loadedUser;
     }
-
-    public static User[] loadAll(Connection conn) throws SQLException {
-
-        UserGroup[] groups = UserGroupDao.getInstance().loadAll();
-
-        ArrayList<User> users = new ArrayList<User>();
-        String sql = "SELECT * FROM users";
-        PreparedStatement prepStm = conn.prepareStatement(sql);
-        ResultSet rs = prepStm.executeQuery();
-        while (rs.next()) {
-            User loadedUser = new User();
-            loadedUser.id = rs.getInt("id");
-            loadedUser.username = rs.getString("username");
-            loadedUser.password = rs.getString("password");
-            loadedUser.email = rs.getString("email");
-            int groupId = rs.getInt("user_group_id");
-            if (groupId > 0) {
-
-                for (int i = 0; i < groups.length; i++) {
-                    if (groups[i].getId() == groupId) {
-                        loadedUser.group = groups[i];
-                        break;
-                    }
-                }
-            }
-            users.add(loadedUser);
-        }
-        User[] uArray = new User[users.size()];
-        uArray = users.toArray(uArray);
-        return uArray;
-    }
-
 
     //TODO sprawdzenie czy mail sie nie powtarza (setter na mailu?) - czy sprawdza to sql?
 
@@ -136,7 +104,7 @@ public class User {
     public void setGroup(int groupId) {
         try {
             Connection conn = DBUtil.getConn();
-            this.group = UserGroup.loadById(conn, groupId);
+            this.group = UserGroupDao.getInstance().loadById(groupId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
