@@ -33,3 +33,8 @@ public class Homepage extends HttpServlet {
 
     }
 }
+
+
+//todo komunikaty o istniejacym juz uzytkowniku przy dodawaniu nowego lub edycji - metoda znajdujaca duplikaty?
+//todo wykasować niepotrzebne metody z klas uzytkownikow, cwiczeni itp
+//
