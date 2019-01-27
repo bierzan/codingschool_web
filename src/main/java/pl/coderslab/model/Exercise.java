@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class Exercise {
 
@@ -18,6 +17,14 @@ public class Exercise {
     public Exercise(String title, String description) {
         this.title = title;
         this.description = description;
+    }
+
+    public static Exercise getExerciseWithAttributeByResultSet(ResultSet rs) throws SQLException {
+        Exercise lodadeExercise = new Exercise();
+        lodadeExercise.id = rs.getInt("id");
+        lodadeExercise.title = rs.getString("title");
+        lodadeExercise.description = rs.getString("description");
+        return lodadeExercise;
     }
 
     public int getId() {
@@ -44,8 +51,6 @@ public class Exercise {
         this.description = description;
     }
 
-
-
     public void delete(Connection conn) throws SQLException {
         if (this.id != 0) {
             String sql = "DELETE FROM exercise WHERE id = ?";
@@ -54,15 +59,6 @@ public class Exercise {
             preparedStatement.executeUpdate();
             this.id = 0;
         }
-    }
-
-
-    public static Exercise getExerciseWithAttributeByResultSet(ResultSet rs) throws SQLException {
-        Exercise lodadeExercise = new Exercise();
-        lodadeExercise.id = rs.getInt("id");
-        lodadeExercise.title = rs.getString("title");
-        lodadeExercise.description = rs.getString("description");
-        return lodadeExercise;
     }
 
 }

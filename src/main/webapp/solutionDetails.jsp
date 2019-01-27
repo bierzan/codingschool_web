@@ -30,7 +30,8 @@
         </tr>
         <tr>
             <th>AUTOR</th>
-            <td>${sol.user.username}</td><td>grupa: ${sol.user.group.name}</td>
+            <td>${sol.user.username}</td>
+            <td>grupa: ${sol.user.group.name}</td>
         </tr>
         <tr>
             <th>DATA PRZESŁANIA</th>

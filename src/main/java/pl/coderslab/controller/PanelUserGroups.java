@@ -18,13 +18,13 @@ public class PanelUserGroups extends HttpServlet {
         String groupToEdit = request.getParameter("editGroupId");
         String newGroupName = request.getParameter("newGroupName");
 
-        if (groupToEdit.length()>0){
+        if (groupToEdit.length() > 0) {
             try {
                 UserGroup group = UserGroupDao.getInstance().loadById(Integer.valueOf(groupToEdit));
                 group.setName(newGroupName);
                 UserGroupDao.getInstance().update(group);
                 response.sendRedirect("/PanelUserGroups");
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
 

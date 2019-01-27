@@ -42,7 +42,7 @@
                     <td>${group.id}</td>
                     <form action="/PanelUserGroups" method="post">
                         <td>
-                            <input type="text" name="newGroupName"  value="${group.name}">
+                            <input type="text" name="newGroupName" value="${group.name}">
                         </td>
                         <td>
                             <button type="submit" name="editGroupId" value="${group.id}" class="btn">Zapisz</button>

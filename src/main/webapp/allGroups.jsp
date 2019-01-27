@@ -23,11 +23,11 @@
         </tr>
 
         <c:forEach items="${groups}" var="group">
-        <tr>
-            <td>${group.id}</td>
-            <td>${group.name}</td>
-            <td><a href="/UsersByGroup?groupId=${group.id}">Pokaż użytkowników</a></td>
-        </tr>
+            <tr>
+                <td>${group.id}</td>
+                <td>${group.name}</td>
+                <td><a href="/UsersByGroup?groupId=${group.id}">Pokaż użytkowników</a></td>
+            </tr>
         </c:forEach>
 
     </table>

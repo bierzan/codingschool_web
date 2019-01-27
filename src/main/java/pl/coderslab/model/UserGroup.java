@@ -17,6 +17,13 @@ public class UserGroup {
         this.name = name;
     }
 
+    public static UserGroup getUserGroupWithAttributesByResultSet(ResultSet rs) throws SQLException {
+        UserGroup loadedGroup = new UserGroup();
+        loadedGroup.id = rs.getInt("id");
+        loadedGroup.name = rs.getString("name");
+        return loadedGroup;
+    }
+
     public int getId() {
         return id;
     }
@@ -41,13 +48,6 @@ public class UserGroup {
             preparedStatement.executeUpdate();
             this.id = 0;
         }
-    }
-
-    public static UserGroup getUserGroupWithAttributesByResultSet(ResultSet rs) throws SQLException {
-        UserGroup loadedGroup = new UserGroup();
-        loadedGroup.id = rs.getInt("id");
-        loadedGroup.name = rs.getString("name");
-        return loadedGroup;
     }
 }
 

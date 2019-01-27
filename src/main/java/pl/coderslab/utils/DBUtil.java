@@ -30,4 +30,3 @@ public class DBUtil {
 
 }
 
-//todo zamienic dbutil zamiast database connection
