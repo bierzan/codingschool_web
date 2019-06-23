@@ -1,4 +1,4 @@
-# Workshop 3 - codingchool_web
+#codingchool_web
 ### Enhanced app that base was prepared in [Workshop 2](https://github.com/bierzan/codingschool)
 ##### Java + MySQL + JSP / Maven / Tomcat
 
